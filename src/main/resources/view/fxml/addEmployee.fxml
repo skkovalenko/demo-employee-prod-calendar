@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="960.0" stylesheets="@../style/styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.desktop.controller.AddEmployeeController">
+   <children>
+      <HBox alignment="CENTER" fillHeight="false" layoutX="100.0" layoutY="14.0" prefHeight="50.0" prefWidth="740.0" style="-fx-background-color: #25AEF3;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Заполните поля" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <AnchorPane layoutY="49.0" prefHeight="420.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <VBox alignment="TOP_RIGHT" layoutX="72.0" layoutY="60.0" prefHeight="422.0" prefWidth="131.0" spacing="14.0" style="-fx-background-color: #25AEF3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="Имя" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="20.0" text="Фамилия" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="51.0" text="Отчество" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="82.0" text="Дата рождения" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="19.0" layoutY="113.0" text="Должность" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="48.0" layoutY="144.0" text="Департамент" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="40.0" layoutY="175.0" text="Город" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="89.0" layoutY="219.0" text="Улица" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="89.0" layoutY="250.0" text="Строение" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Label layoutX="64.0" layoutY="281.0" text="Квартира" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" layoutX="131.0" layoutY="5.0" spacing="10.0" style="-fx-background-color: #25AEF3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TextField fx:id="firstName" layoutX="20.0" promptText="Петр" />
+                  <TextField fx:id="lastName" layoutX="20.0" layoutY="20.0" promptText="Петров" />
+                  <TextField fx:id="middleName" layoutX="20.0" layoutY="55.0" promptText="Петрович" />
+                  <TextField fx:id="dayOfBirth" layoutX="20.0" layoutY="90.0" promptText="10.1.1995" />
+                  <TextField fx:id="position" layoutX="20.0" layoutY="125.0" promptText="самый главный" />
+                  <TextField fx:id="department" layoutX="20.0" layoutY="160.0" promptText="Имя Департамента(Если такого нет в базе данных, создается новый)" />
+                  <TextField fx:id="city" layoutX="20.0" layoutY="195.0" promptText="Спб" />
+                  <TextField fx:id="street" layoutX="20.0" layoutY="230.0" promptText="Невский проспект" />
+                  <TextField fx:id="house" layoutX="20.0" layoutY="265.0" promptText="4А/2" />
+                  <TextField fx:id="apart" layoutX="20.0" layoutY="300.0" promptText="54" />
+                  <Button fx:id="buttonSaveEmloyee" mnemonicParsing="false" onAction="#clickButtonSaveEmployee" text="Сохранить" textFill="WHITE">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <HBox alignment="CENTER" layoutX="740.0" layoutY="-2.0" prefHeight="50.0" prefWidth="77.0" style="-fx-background-color: #25AEF3;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="buttonBackRedactorEmp" mnemonicParsing="false" onAction="#clickButtonBackRedactorEmp" text="Назад" textFill="WHITE" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

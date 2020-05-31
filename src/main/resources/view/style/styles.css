@@ -1,0 +1,28 @@
+.button {
+    -fx-background-color: #25AEF3;
+    -fx-alignment: center-left;
+    -fx-text-fill: white;
+}
+.button:hover {
+    -fx-background-color: #1F96D2;
+    -fx-text-fill: white;
+}
+.button:pressed {
+    -fx-background-color: #1A82B6;
+    -fx-text-fill: white;
+}
+
+#vBoxMainForDepartment .button{
+    -fx-text-fill: white;
+    -fx-pref-height: 46;
+    -fx-pref-width: 238;
+    -fx-font-size: 20;
+    -fx-label-padding: 0, 0, 0, 25;
+}
+.choice-box > .arrow-button {
+    -fx-padding: 0;
+}
+
+.choice-box > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
