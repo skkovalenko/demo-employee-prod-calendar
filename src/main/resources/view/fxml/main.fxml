@@ -114,7 +114,11 @@
         </ScrollPane>
       <HBox alignment="BOTTOM_LEFT" layoutX="220.0" layoutY="503.0" prefHeight="40.0" prefWidth="758.0" style="-fx-background-color: #25AEF3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <RadioButton fx:id="adminEmp" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#clickAdminEmp" prefHeight="69.0" prefWidth="129.0" text="Админ. работников" textFill="WHITE" />
+            <RadioButton fx:id="adminEmp" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#clickAdminEmp" prefHeight="63.0" prefWidth="129.0" text="Админ. работников" textFill="WHITE">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></RadioButton>
+            <RadioButton fx:id="timekeeper" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#clickTimekeeper" prefHeight="69.0" prefWidth="129.0" text="Табельщик" textFill="WHITE" />
             <Button fx:id="redactEmployee" alignment="CENTER" mnemonicParsing="false" onAction="#clickRedEmployee" prefHeight="64.0" prefWidth="165.0" text="Редактор сотрудников" textFill="WHITE">
                <font>
                   <Font size="14.0" />

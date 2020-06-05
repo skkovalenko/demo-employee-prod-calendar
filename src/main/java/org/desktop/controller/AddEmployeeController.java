@@ -2,6 +2,7 @@ package org.desktop.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import org.desktop.AppData;
 import org.desktop.StageInitializer;
@@ -42,7 +43,7 @@ public class AddEmployeeController {
     @FXML private TextField firstName;
     @FXML private TextField lastName;
     @FXML private TextField middleName;
-    @FXML private TextField dayOfBirth;
+    @FXML private DatePicker dateOfBirth;
     @FXML private TextField position;
     @FXML private TextField department;
     @FXML private TextField city;
@@ -75,8 +76,8 @@ public class AddEmployeeController {
         employee.setFirstName(firstName.getText());
         employee.setLastName(lastName.getText());
         employee.setMiddleName(middleName.getText());
-        employee.setDateOfBirth(dayOfBirth.getText());
-        employee.setAge(Period.between(LocalDate.parse(dayOfBirth.getText(), DateTimeFormatter.ofPattern("dd.MM.yyyy")), LocalDate.now()).getYears());
+        employee.setDateOfBirth(dateOfBirth.getValue().toString());
+        employee.setAge(Period.between(dateOfBirth.getValue(), LocalDate.now()).getYears());
         employee.setPosition(position.getText());
         employee.setDepartment(getDepartment(department.getText()));
         employee.setAddress(addressCreate(city.getText(), street.getText(), house.getText(), apart.getText(), employee));
@@ -84,16 +85,12 @@ public class AddEmployeeController {
 
     }
     private void createProdCalendarEmployee(Employee employee){
-
         LocalDate localDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int nextYear = localDate.getYear() + 1;
-
         DataProdCalendar year = AppData.getDataProdCalendarHashMap().get(localDate.getYear());
-
         Month monthCheck = localDate.getMonth();
 
         Set<DayForProdCalendar> daysMonth = year.getDays(localDate.getMonth());
-
         while (localDate.getYear() < nextYear){
             if(monthCheck != localDate.getMonth()){
                 monthCheck = localDate.getMonth();
@@ -117,6 +114,7 @@ public class AddEmployeeController {
             localDate = localDate.plusDays(1);
         }
     }
+
     private Address addressCreate(String city, String street, String house, String apart, Employee employee){
         Address address = new Address();
         address.setCity(city);
@@ -139,7 +137,6 @@ public class AddEmployeeController {
         Department department = new Department();
         department.setName(nameDepartment);
         departmentRepository.save(department);
-
         return department;
     }
 }

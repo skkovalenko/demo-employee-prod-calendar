@@ -16,16 +16,22 @@
         <content>
           <AnchorPane>
                <children>
-                  <TableView fx:id="tableRedactorEmp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="435.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableRedactorEmp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="firstNameCol" prefWidth="120.0" resizable="false" text="Имя" />
                         <TableColumn fx:id="lastNameCol" prefWidth="120.0" text="Фамилия" />
                         <TableColumn fx:id="middleNameCol" prefWidth="120.0" text="Отчество" />
-                        <TableColumn fx:id="dayOfBirthCol" maxWidth="200.0" prefWidth="100.0" text="Дата рождения" />
-                        <TableColumn fx:id="ageCol" maxWidth="200.0" prefWidth="70.0" text="Возраст" />
+                        <TableColumn fx:id="dayOfBirthCol" maxWidth="200.0" prefWidth="120.0" text="Дата рождения" />
+                        <TableColumn fx:id="ageCol" maxWidth="200.0" prefWidth="64.0" text="Возраст" />
                         <TableColumn fx:id="positionCol" prefWidth="110.0" text="Должность" />
                         <TableColumn fx:id="remoteWorkCol" maxWidth="150.0" prefWidth="120.0" text="Удаленная работа" />
-                        <TableColumn fx:id="addressCol" minWidth="15.0" prefWidth="200.0" text="Место проживаня" />
+                        <TableColumn fx:id="addressCol" minWidth="15.0" prefWidth="200.0" text="Место проживаня">
+                           <columns>
+                              <TableColumn fx:id="cityCol" prefWidth="75.0" text="Город" />
+                              <TableColumn fx:id="streetCol" prefWidth="75.0" text="Улица" />
+                              <TableColumn fx:id="houseCol" prefWidth="75.0" text="Строение" />
+                              <TableColumn fx:id="apartCol" prefWidth="75.0" text="Квартира" />
+                           </columns></TableColumn>
                     </columns>
                   </TableView>
                </children>
@@ -41,14 +47,6 @@
                <HBox.margin>
                   <Insets bottom="1.0" />
                </HBox.margin></Button>
-            <Button fx:id="buttonEditRedactorEmp" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onAction="#clickButtonEditRedactorEmp" text="Редактировать" textFill="WHITE">
-               <font>
-                  <Font size="17.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="1.0" />
-               </HBox.margin>
-            </Button>
             <Button fx:id="buttonDeleteRedactorEmp" alignment="CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="70.0" mnemonicParsing="false" onAction="#clickButtonDeleteRedactorEmp" text="Удалить" textFill="WHITE">
                <font>
                   <Font size="17.0" />

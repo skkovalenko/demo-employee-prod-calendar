@@ -1,6 +1,7 @@
 package org.desktop.model;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +43,75 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CalendarProd> calendarProds = new HashSet<>();
+
+    @Transient
+    private String fullName;
+
+    @Transient
+    private String addressStr;
+    @Transient
+    private String city;
+    @Transient
+    private String street;
+    @Transient
+    private String house;
+    @Transient
+    private String apart;
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return address.getStreet();
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getHouse() {
+        return address.getHouse();
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
+    }
+
+    public String getApart() {
+        return address.getApp();
+    }
+
+    public void setApart(String apart) {
+        this.apart = apart;
+    }
+
+    public String getAddressStr() {
+        addressStr = "";
+        addressStr = address.getCity() + " / "
+                + address.getStreet() + " / "
+                + address.getHouse() + " / "
+                + address.getApp();
+        return addressStr;
+    }
+
+    public void setAddressStr(String addressStr) {
+        this.addressStr = addressStr;
+    }
+
+    public String getFullName() {
+        fullName = "";
+        fullName = lastName + " " + firstName + " " + middleName;
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public TreeSet<CalendarProd> getCalendarProds() {
         return new TreeSet<>(calendarProds);
@@ -91,13 +161,15 @@ public class Employee {
         this.middleName = middleName;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public LocalDate getDateOfBirth() {
+        return Instant.ofEpochMilli(dateOfBirth.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     public void setDateOfBirth(String dateOfBirth)  {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        this.dateOfBirth = Date.from(LocalDate.parse(dateOfBirth, formatter).atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
+        this.dateOfBirth = Date.from(LocalDate.parse(dateOfBirth).atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
     }
 
     public int getAge() {
