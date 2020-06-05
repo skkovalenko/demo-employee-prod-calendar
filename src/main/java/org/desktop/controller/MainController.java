@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import org.desktop.model.*;
 import org.desktop.model.repository.CalendarProdRepository;
 import org.desktop.model.repository.DepartmentRepository;
 import org.desktop.model.repository.EmployeeRepository;
+import org.desktop.parse.DayForProdCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -97,7 +100,8 @@ public class MainController {
 
         createDepButton();
         loadingDataEmployees(null);
-        loadingDataCalendarProd(yearDate, LocalDate.now().getMonth());
+        tableMain.setEditable(true);
+        loadingColumnsDays(yearDate, LocalDate.now().getMonth());
         year.setText("" + yearDate);
     }
 
@@ -105,112 +109,160 @@ public class MainController {
     @FXML public void clickJan() {
         for(Button button : monthButtons) button.setStyle(null);
         jan.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.JANUARY);
+        //loadingDataCalendarProd(yearDate, Month.JANUARY);
+        loadingColumnsDays(yearDate, Month.JANUARY);
     }
     @FXML public void clickFeb(){
         for(Button button : monthButtons) button.setStyle(null);
         feb.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.FEBRUARY);
+        //loadingDataCalendarProd(yearDate, Month.FEBRUARY);
+        loadingColumnsDays(yearDate, Month.FEBRUARY);
     }
     @FXML public void clickMar(){
         for(Button button : monthButtons) button.setStyle(null);
         mar.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.MARCH);
+        //loadingDataCalendarProd(yearDate, Month.MARCH);
+        loadingColumnsDays(yearDate, Month.MARCH);
     }
     @FXML public void clickApr(){
         for(Button button : monthButtons) button.setStyle(null);
         apr.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.APRIL);
+        //loadingDataCalendarProd(yearDate, Month.APRIL);
+        loadingColumnsDays(yearDate, Month.APRIL);
     }
     @FXML public void clickMay(){
         for(Button button : monthButtons) button.setStyle(null);
         may.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.MAY);
+        //loadingDataCalendarProd(yearDate, Month.MAY);
+        loadingColumnsDays(yearDate, Month.MAY);
     }
     @FXML public void clickJun(){
         for(Button button : monthButtons) button.setStyle(null);
         jun.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.JUNE);
+        //loadingDataCalendarProd(yearDate, Month.JUNE);
+        loadingColumnsDays(yearDate, Month.JUNE);
     }
     @FXML public void clickJul(){
         for(Button button : monthButtons) button.setStyle(null);
         jul.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.JULY);
+        //loadingDataCalendarProd(yearDate, Month.JULY);
+        loadingColumnsDays(yearDate, Month.JULY);
     }
     @FXML public void clickAug(){
         for(Button button : monthButtons) button.setStyle(null);
         aug.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.AUGUST);
+        //loadingDataCalendarProd(yearDate, Month.AUGUST);
+        loadingColumnsDays(yearDate, Month.AUGUST);
     }
     @FXML public void clickSep(){
         for(Button button : monthButtons) button.setStyle(null);
         sep.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.SEPTEMBER);
+        //loadingDataCalendarProd(yearDate, Month.SEPTEMBER);
+        loadingColumnsDays(yearDate, Month.SEPTEMBER);
     }
     @FXML public void clickOct(){
         for(Button button : monthButtons) button.setStyle(null);
         oct.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.OCTOBER);
+        //loadingDataCalendarProd(yearDate, Month.OCTOBER);
+        loadingColumnsDays(yearDate, Month.OCTOBER);
     }
     @FXML public void clickNov(){
         for(Button button : monthButtons) button.setStyle(null);
         nov.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.NOVEMBER);
+        //loadingDataCalendarProd(yearDate, Month.NOVEMBER);
+        loadingColumnsDays(yearDate, Month.NOVEMBER);
     }
     @FXML public void clickDec(){
         for(Button button : monthButtons) button.setStyle(null);
         dec.setStyle("-fx-background-color: #1F96D2");
-        loadingDataCalendarProd(yearDate, Month.DECEMBER);
-    }
+        //loadingDataCalendarProd(yearDate, Month.DECEMBER);
+        loadingColumnsDays(yearDate, Month.DECEMBER);
 
-    // Метод загрузки производсвенного календаря CalendarProd на месяц
-    private void loadingDataCalendarProd(int year, Month month){
-        tableMain.getColumns().remove(3, tableMain.getColumns().size());
-        LocalDate localDateMonth = LocalDate.of(year, month.getValue(), 1);
-        while (localDateMonth.getMonth() == month){
-            TableColumn<Employee, ChoiceBox<TypeCode>> calendarProdIntegerTableColumn = new TableColumn<>("" + localDateMonth.getDayOfMonth());
-
-            LocalDate finalLocalDateMonth = localDateMonth;
-            calendarProdIntegerTableColumn.setCellValueFactory(param -> {
-                ChoiceBox<TypeCode> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList());
-                CalendarProd calendarProd = getCalendarProdDay(finalLocalDateMonth, param.getValue());
-                assert calendarProd != null;
-
-
-                if(calendarProd.getTypeDay() == TypeDay.DAYOFF || calendarProd.getTypeDay() == TypeDay.HOLIDAY){
-                    choiceBox.setStyle("-fx-background-color: #FFACAC");
-                }
-                if(calendarProd.getTypeDay() == TypeDay.PREHOLIDAY){
-                    choiceBox.setStyle("-fx-background-color: #FFFB86");
-                }
-                if(calendarProd.getTypeDay() == TypeDay.WORKDAY){
-                    choiceBox.setStyle("-fx-background-color: #AEFF86");
-                }
-                choiceBox.setValue(calendarProd.getTypeCode());
-                choiceBox.setItems(FXCollections.observableArrayList(TypeCode.values()));
-                choiceBox.setOnAction(actionEvent -> {
-                    Optional<CalendarProd> forNewCode = calendarProdRepository.findById(calendarProd.getId());
-                    if(forNewCode.isEmpty()){
-                        return;
-                    }
-                    AppData.setDayCodeForCalendarProd(param.getValue().getId(), calendarProd.getId(), choiceBox.getValue());
-                    forNewCode.get().setTypeCode(choiceBox.getValue());
-                    calendarProdRepository.save(forNewCode.get());
-                });
-                return new SimpleObjectProperty<>(choiceBox);
-            });
-            tableMain.getColumns().add(calendarProdIntegerTableColumn);
-            localDateMonth = localDateMonth.plusDays(1);
-        }
     }
 
     private CalendarProd getCalendarProdDay(LocalDate localDate, Employee employee){
-        for(CalendarProd calendarProd : AppData.getEmployeeCalendarProdHashMap().get(employee)){
-            if(calendarProd.getDate().toString().equals(localDate.toString())){
-                return calendarProd;
+
+        TreeSet<CalendarProd> calendarProdTreeSet = AppData.getEmployeeCalendarProdHashMap().get(employee);
+        CalendarProd[] calendarProd = new CalendarProd[calendarProdTreeSet.size()];
+        calendarProd = calendarProdTreeSet.toArray(calendarProd);
+        return bS(calendarProd, localDate);
+    }
+
+    private CalendarProd bS(CalendarProd[] calendarProds, LocalDate date){
+        //System.out.println(date);
+        CalendarProd day = null;
+        if(calendarProds.length < 6){
+            for(CalendarProd calendarProd : calendarProds){
+                if(calendarProd.getDate().toString().equals(date.toString())){
+                     day = calendarProd;
+                }
             }
+        }else {
+            int i = calendarProds.length / 2;
+            LocalDate dateFromArr = LocalDate.parse(calendarProds[i].getDate().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if(date.isBefore(dateFromArr)){
+                CalendarProd[] calendarProds1 = new CalendarProd[i];
+                System.arraycopy(calendarProds, 0, calendarProds1, 0, i);
+                day = bS(calendarProds1, date);
+
+            }else {
+                CalendarProd[] calendarProds1 = new CalendarProd[(calendarProds.length - i)];
+                System.arraycopy(calendarProds, i , calendarProds1, 0, calendarProds.length - i);
+                day = bS(calendarProds1, date);
+            }
+
         }
-        return null;
+        return day;
+
+    }
+
+    // Метод загрузки производсвенного календаря CalendarProd на месяц
+    private void loadingColumnsDays(int year, Month month){
+        tableMain.getColumns().remove(3, tableMain.getColumns().size());
+        LocalDate localDateMonth = LocalDate.of(year, month.getValue(), 1);
+        ObservableList<TypeCode> typeCodes = FXCollections.observableArrayList(TypeCode.values());
+        Set<DayForProdCalendar> dayForProdCalendarSet = AppData.getDataProdCalendarHashMap().get(year).getDays(month);
+
+        while (localDateMonth.getMonth() == month){
+
+            TableColumn<Employee, TypeCode> column = new TableColumn<>("" + localDateMonth.getDayOfMonth());
+            column.setStyle("-fx-background-color: rgba(0,255,35, 0.1)");
+            for(DayForProdCalendar day : dayForProdCalendarSet){
+                if(day.getNumber() == localDateMonth.getDayOfMonth()){
+                    if(day.getTypeDay() == TypeDay.DAYOFF || day.getTypeDay() == TypeDay.HOLIDAY){
+                        column.setStyle("-fx-background-color: rgba(255,0,0, 0.1)");
+                    }
+                    if(day.getTypeDay() == TypeDay.PREHOLIDAY){
+                        column.setStyle("-fx-background-color: rgba(255,213,0, 0.1)");
+                    }
+                }
+            }
+
+            LocalDate finalLocalDateMonth = localDateMonth;
+            column.setCellValueFactory(param -> {
+                Employee employee = param.getValue();
+                CalendarProd calendarProd = getCalendarProdDay(finalLocalDateMonth, employee);
+                TypeCode typeCode = calendarProd.getTypeCode();
+                return new SimpleObjectProperty<>(typeCode);
+            });
+            column.setCellFactory(ComboBoxTableCell.forTableColumn(typeCodes));
+            column.setOnEditCommit((TableColumn.CellEditEvent<Employee, TypeCode> event) -> {
+                TablePosition<Employee, TypeCode> position = event.getTablePosition();
+                int row = position.getRow();
+                TypeCode typeCodeNew = event.getNewValue();
+                Employee employee = event.getTableView().getItems().get(row);
+                CalendarProd calendarProd = getCalendarProdDay(finalLocalDateMonth, employee);
+                Optional<CalendarProd> calendarProdDB = calendarProdRepository.findById(calendarProd.getId());
+                calendarProdDB.get().setTypeCode(typeCodeNew);
+                calendarProdRepository.save(calendarProdDB.get());
+                AppData.setDayCodeForCalendarProd(employee.getId(), calendarProd.getId(), typeCodeNew);
+
+
+            });
+
+            tableMain.getColumns().add(column);
+            localDateMonth = localDateMonth.plusDays(1);
+        }
     }
 
     /// Radio button
@@ -233,7 +285,6 @@ public class MainController {
         positionMain.setCellValueFactory(new PropertyValueFactory<Employee, String>("position"));
         nameMain.setCellValueFactory(new PropertyValueFactory<Employee, String>("firstName"));
         numberMain.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("id"));
-
         if(department == null){
             tableMain.setItems(AppData.getEmployeeData());
 

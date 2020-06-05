@@ -103,8 +103,8 @@
                     <children>
                         <TableView fx:id="tableMain" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columns>
-                                <TableColumn fx:id="nameMain" prefWidth="200.0" text="ФИО" />
-                                <TableColumn fx:id="positionMain" prefWidth="100.0" text="Должность" />
+                                <TableColumn fx:id="nameMain" prefWidth="105.0" text="ФИО" />
+                                <TableColumn fx:id="positionMain" prefWidth="195.0" text="Должность" />
                         <TableColumn fx:id="numberMain" prefWidth="100.0" text="Табельный №" />
                             </columns>
                         </TableView>
