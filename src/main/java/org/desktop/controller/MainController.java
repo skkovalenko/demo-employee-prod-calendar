@@ -15,6 +15,7 @@ import org.desktop.model.*;
 import org.desktop.model.repository.CalendarProdRepository;
 import org.desktop.model.repository.DepartmentRepository;
 import org.desktop.model.repository.EmployeeRepository;
+import org.desktop.parse.DataProdCalendar;
 import org.desktop.parse.DayForProdCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +26,7 @@ import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 
 @Component
 @Controller
@@ -47,46 +46,37 @@ public class MainController {
 
     @FXML private VBox vBoxMainForDepartment;
 
-    @FXML private Button jan;
-    @FXML private Button feb;
-    @FXML private Button mar;
-    @FXML private Button apr;
-    @FXML private Button may;
-    @FXML private Button jun;
-    @FXML private Button jul;
-    @FXML private Button aug;
-    @FXML private Button sep;
-    @FXML private Button oct;
-    @FXML private Button nov;
-    @FXML private Button dec;
-
+    @FXML private Button jan; @FXML private Button feb; @FXML private Button mar; @FXML private Button apr;
+    @FXML private Button may; @FXML private Button jun; @FXML private Button jul; @FXML private Button aug;
+    @FXML private Button sep; @FXML private Button oct; @FXML private Button nov; @FXML private Button dec;
 
     @FXML private Button redactEmployee;
     @FXML private Button allDep;
 
-
     @FXML private RadioButton adminEmp;
     @FXML private RadioButton timekeeper;
-
 
     @FXML private TableView<Employee> tableMain;
     @FXML private TableColumn<Employee, String> nameMain;
     @FXML private TableColumn<Employee, String> positionMain;
     @FXML private TableColumn<Employee, Integer> numberMain;
-    private ArrayList<Button> monthButtons = new ArrayList<>();
+
     private int yearDate = LocalDate.now().getYear();
 
+    private static final ArrayList<Button> MONTH_BUTTONS = new ArrayList<>();
 
     @FXML
-    private void initialize() throws IOException {
-        monthButtons.clear();
-        monthButtons.add(jan); monthButtons.add(feb); monthButtons.add(mar); monthButtons.add(apr);
-        monthButtons.add(may); monthButtons.add(jun); monthButtons.add(jul); monthButtons.add(aug);
-        monthButtons.add(sep); monthButtons.add(oct); monthButtons.add(nov); monthButtons.add(dec);
+    private void initialize() {
 
-        if(AppData.getEmployeeHashSet().isEmpty()){
-            AppData.setEmployeeHashSet(employeeRepository.findAll());
+        MONTH_BUTTONS.clear();
+        MONTH_BUTTONS.add(jan); MONTH_BUTTONS.add(feb); MONTH_BUTTONS.add(mar); MONTH_BUTTONS.add(apr);
+        MONTH_BUTTONS.add(may); MONTH_BUTTONS.add(jun); MONTH_BUTTONS.add(jul); MONTH_BUTTONS.add(aug);
+        MONTH_BUTTONS.add(sep); MONTH_BUTTONS.add(oct); MONTH_BUTTONS.add(nov); MONTH_BUTTONS.add(dec);
+
+        if(AppData.getEmployeeData().isEmpty()){
+            AppData.setEmployeeData(employeeRepository.findAll());
         }
+
         createDepartmentButton();
         loadingDataEmployees(null);
         loadingColumnsDays(yearDate, LocalDate.now().getMonth());
@@ -95,78 +85,76 @@ public class MainController {
 
     // onAction для месяцев
     @FXML public void clickJan(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         jan.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.JANUARY);
     }
     @FXML public void clickFeb(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         feb.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.FEBRUARY);
     }
     @FXML public void clickMar(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         mar.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.MARCH);
     }
     @FXML public void clickApr(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         apr.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.APRIL);
     }
     @FXML public void clickMay(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         may.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.MAY);
     }
     @FXML public void clickJun(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         jun.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.JUNE);
     }
     @FXML public void clickJul(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         jul.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.JULY);
     }
     @FXML public void clickAug(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         aug.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.AUGUST);
     }
     @FXML public void clickSep(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         sep.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.SEPTEMBER);
     }
     @FXML public void clickOct(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         oct.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.OCTOBER);
     }
     @FXML public void clickNov(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         nov.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.NOVEMBER);
     }
     @FXML public void clickDec(){
-        for(Button button : monthButtons) button.setStyle(null);
+        for(Button button : MONTH_BUTTONS) button.setStyle(null);
         dec.setStyle("-fx-background-color: #1F96D2");
         loadingColumnsDays(yearDate, Month.DECEMBER);
 
     }
-    //
 
     // Метод загрузки производсвенного календаря CalendarProd на месяц
-
     private void loadingColumnsDays(int year, Month month){
         tableMain.getColumns().remove(3, tableMain.getColumns().size());
         LocalDate localDateMonth = LocalDate.of(year, month.getValue(), 1);
         ObservableList<TypeCode> typeCodes = FXCollections.observableArrayList(TypeCode.values());
+
         Set<DayForProdCalendar> dayForProdCalendarSet = AppData.getDataProdCalendarHashMap().get(year).getDays(month);
 
         while (localDateMonth.getMonth() == month){
-
             TableColumn<Employee, TypeCode> column = new TableColumn<>("" + localDateMonth.getDayOfMonth());
             column.setStyle("-fx-background-color: rgba(0,255,35, 0.1)");
             for(DayForProdCalendar day : dayForProdCalendarSet){
@@ -198,14 +186,13 @@ public class MainController {
                 calendarProdDB.get().setTypeCode(typeCodeNew);
                 calendarProdRepository.save(calendarProdDB.get());AppData.setDayCodeForCalendarProd(employee.getId(), calendarProd.getId(), typeCodeNew);
             });
-
             tableMain.getColumns().add(column);
             localDateMonth = localDateMonth.plusDays(1);
         }
     }
     // Поиск даты
     private CalendarProd getCalendarProdDay(LocalDate localDate, Employee employee){
-        TreeSet<CalendarProd> calendarProdTreeSet = AppData.getEmployeeCalendarProdHashMap().get(employee);
+        TreeSet<CalendarProd> calendarProdTreeSet = AppData.getEmployeeCalendarProdHashMap().get(employee.getId());
         CalendarProd[] calendarProd = new CalendarProd[calendarProdTreeSet.size()];
         calendarProd = calendarProdTreeSet.toArray(calendarProd);
         return bS(calendarProd, localDate);
@@ -216,7 +203,7 @@ public class MainController {
             day = calendarProds[0];
         }else {
             int i = calendarProds.length / 2;
-            LocalDate dateFromArr = LocalDate.parse(calendarProds[i].getDate().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate dateFromArr = calendarProds[i].getDate();
             if(date.isBefore(dateFromArr)){
                 CalendarProd[] calendarProds1 = new CalendarProd[i];
                 System.arraycopy(calendarProds, 0, calendarProds1, 0, i);
@@ -242,7 +229,7 @@ public class MainController {
         if(adminEmp.selectedProperty().getValue()) adminEmp.selectedProperty().setValue(false);
     }
 
-    //ЗАгрузка всех департаментов
+    //Загрузка всех департаментов
     @FXML public void clickAllDep(){
         loadingDataEmployees(null);
     }
@@ -256,15 +243,18 @@ public class MainController {
 
     // Метод загрузки данных сотрудников в таблицу по департаментам (пр инициализаци по умолчанию загружаются все департаменты)
     private void loadingDataEmployees(Department department){
-        positionMain.setCellValueFactory(new PropertyValueFactory<Employee, String>("position"));
-        nameMain.setCellValueFactory(new PropertyValueFactory<Employee, String>("fullName"));
-        numberMain.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("id"));
+
+        positionMain.setCellValueFactory(new PropertyValueFactory<>("position"));
+        nameMain.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        numberMain.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         if(department == null){
             tableMain.setItems(AppData.getEmployeeData());
         }
+
         else {
             ObservableList<Employee> employeeDataDepartment = FXCollections.observableArrayList();
-            for(Employee employee : AppData.getEmployeeHashSet())
+            for(Employee employee : AppData.getEmployeeData())
                 if(employee.getDepartment() != null && employee.getDepartment().getId() == department.getId()) {
                     employeeDataDepartment.add(employee);
                 }
@@ -275,9 +265,10 @@ public class MainController {
     // Добавление button существующих департаментов на панель VBox, добалвение onAction к button департамента
     private void createDepartmentButton(){
         for(Department department : AppData.getDepartmentHashSet()){
-            if(department == null){
+            /*if(department == null){
                 continue;
-            }
+            }*/
+
             Button button = new Button();
             button.setText(department.getName());
             button.setOnAction(actionEvent -> loadingDataEmployees(department));

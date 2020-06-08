@@ -17,7 +17,9 @@ import javafx.util.Callback;
 import org.desktop.AppData;
 import org.desktop.StageInitializer;
 import org.desktop.controller.custom.DatePickerCell;
+import org.desktop.model.Department;
 import org.desktop.model.Employee;
+import org.desktop.model.repository.DepartmentRepository;
 import org.desktop.model.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +40,8 @@ import java.util.Optional;
 public class RedactorEmpController {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @Value("classpath:/view/fxml/main.fxml")
     private Resource mainResource;
@@ -215,7 +219,27 @@ public class RedactorEmpController {
         Stage stage = StageInitializer.getStageMain(addEmpResource);
     }
 
-    @FXML private void clickButtonDeleteRedactorEmp(){}
+    @FXML private void clickButtonDeleteRedactorEmp(){
+        Employee employeeForDelete = tableRedactorEmp.getSelectionModel().getSelectedItem();
+        tableRedactorEmp.getItems().remove(employeeForDelete);
+        employeeRepository.deleteById(employeeForDelete.getId());
+
+        if(employeeForDelete.getDepartment() != null){
+            Optional<Department> department = departmentRepository.findById(employeeForDelete.getDepartment().getId());
+            for(Employee employee : department.get().getEmployeeSet()){
+                if(employee.getId() == employeeForDelete.getId()){
+                    employeeForDelete = employee;
+                }
+            }
+            if(department.get().getEmployeeSet().isEmpty()){
+                departmentRepository.delete(department.get());
+            }else {
+                department.get().getEmployeeSet().remove(employeeForDelete);
+                departmentRepository.save(department.get());
+            }
+        }
+        AppData.deleteEmployee(employeeForDelete);
+    }
     @FXML private void clickButtonSearchRedactorEmp(){}
 
     @FXML private void clickButtonBack() throws IOException {

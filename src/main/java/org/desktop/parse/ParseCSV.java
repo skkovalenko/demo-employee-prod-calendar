@@ -12,7 +12,7 @@ public class ParseCSV {
     private static final String PATH_CSV = "data/data-20191112T1252-structure-20191112T1247.csv";
     private HashMap<Integer, DataProdCalendar> dataProdCalendars = new HashMap<>();
 
-    public HashMap<Integer, DataProdCalendar> getProdCalendar() {
+    public HashMap<Integer, DataProdCalendar> getDataProdCalendar() {
 
         List<String> lines = null;
         try {

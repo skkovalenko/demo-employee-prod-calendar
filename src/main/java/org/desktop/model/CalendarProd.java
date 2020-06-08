@@ -1,6 +1,7 @@
 package org.desktop.model;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -53,8 +54,11 @@ public class CalendarProd implements Comparable<CalendarProd> {
         this.typeDay = typeDay;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDate getDate() {
+
+        return Instant.ofEpochMilli(date.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     public void setDate(LocalDate date) {

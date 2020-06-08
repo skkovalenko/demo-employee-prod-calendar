@@ -3,6 +3,7 @@ package org.desktop.model;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -26,7 +27,6 @@ public class Employee {
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
-    private int age;
     private String position;
     @Column(name = "remote_work")
     private boolean remoteWork;
@@ -46,7 +46,6 @@ public class Employee {
 
     @Transient
     private String fullName;
-
     @Transient
     private String addressStr;
     @Transient
@@ -57,6 +56,16 @@ public class Employee {
     private String house;
     @Transient
     private String apart;
+    @Transient
+    private int age;
+
+    public int getAge() {
+        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getCity() {
         return address.getCity();
@@ -170,14 +179,6 @@ public class Employee {
     public void setDateOfBirth(String dateOfBirth)  {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         this.dateOfBirth = Date.from(LocalDate.parse(dateOfBirth).atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getPosition() {

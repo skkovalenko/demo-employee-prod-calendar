@@ -13,24 +13,58 @@ import java.util.*;
 
 public class AppData {
 
-    private static HashMap<Employee, TreeSet<CalendarProd>> employeeCalendarProdHashMap = new HashMap<>();
-    private static HashMap<Integer, DataProdCalendar> dataProdCalendarHashMap;
-    private static HashSet<Employee> employeeHashSet = new HashSet<>();
-    private static HashSet<Department> departmentHashSet = new HashSet<>();
+    private static final HashMap<Integer, DataProdCalendar> dataProdCalendarHashMap = new ParseCSV().getDataProdCalendar();
+
     private static ObservableList<Employee> employeeData = FXCollections.observableArrayList();
+    private static HashMap<Integer, TreeSet<CalendarProd>> employeeCalendarProdHashMap = new HashMap<>();
+    private static HashSet<Department> departmentHashSet = new HashSet<>();
 
     public static void setEmployee(Employee employee){
-        employeeCalendarProdHashMap.put(employee, employee.getCalendarProds());
-        employeeHashSet.add(employee);
-        departmentHashSet.add(employee.getDepartment());
+        employeeCalendarProdHashMap.put(employee.getId(), employee.getCalendarProds());
+        if(employee.getDepartment() != null){
+            boolean checkDep = true;
+            for(Department department : departmentHashSet){
+                if(department.getName().equals(employee.getDepartment().getName())){
+                    checkDep = false;
+                    break;
+                }
+            }
+            if(checkDep){
+                departmentHashSet.add(employee.getDepartment());
+            }
+        }
         employeeData.add(employee);
     }
-    public static void setEmployeeHashSet(Iterable<Employee> employeeIterable) {
+
+    public static void deleteEmployee(Employee employee){
+        employeeData.remove(employee);
+        employeeCalendarProdHashMap.remove(employee.getId());
+
+        Department departmentDel = employee.getDepartment();
+        boolean checkDep = false;
+        if(departmentDel != null){
+            for(Department department : departmentHashSet){
+                if(department.getId() == departmentDel.getId()){
+                    department.getEmployeeSet().remove(employee);
+                    if(department.getEmployeeSet() == null){
+                        checkDep = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if(checkDep){
+            departmentHashSet.remove(departmentDel);
+        }
+
+    }
+    public static void setEmployeeData(Iterable<Employee> employeeIterable) {
 
         for(Employee employee : employeeIterable){
-            employeeHashSet.add(employee);
-            employeeCalendarProdHashMap.put(employee, employee.getCalendarProds());
-            departmentHashSet.add(employee.getDepartment());
+            employeeCalendarProdHashMap.put(employee.getId(), employee.getCalendarProds());
+            if(employee.getDepartment() != null){
+                departmentHashSet.add(employee.getDepartment());
+            }
             employeeData.add(employee);
         }
     }
@@ -39,27 +73,23 @@ public class AppData {
         return employeeData;
     }
 
-    public static HashMap<Employee, TreeSet<CalendarProd>> getEmployeeCalendarProdHashMap() {
+    public static HashMap<Integer, TreeSet<CalendarProd>> getEmployeeCalendarProdHashMap() {
         return employeeCalendarProdHashMap;
     }
 
     public static HashMap<Integer, DataProdCalendar> getDataProdCalendarHashMap() {
-        if (dataProdCalendarHashMap == null) dataProdCalendarHashMap = new ParseCSV().getProdCalendar();
-            return dataProdCalendarHashMap;
+        return dataProdCalendarHashMap;
     }
 
-    public static HashSet<Employee> getEmployeeHashSet() {
-        return employeeHashSet;
-    }
 
     public static HashSet<Department> getDepartmentHashSet() {
         return departmentHashSet;
     }
 
     public static void setDayCodeForCalendarProd(int employeeId, long calendarProdId, TypeCode typeCode){
-        for(Employee emp : employeeHashSet){
-            if(emp.getId() == employeeId){
-                for(CalendarProd calendarProd : emp.getCalendarProds()){
+        for(Employee employee : employeeData){
+            if(employee.getId() == employeeId){
+                for(CalendarProd calendarProd : employee.getCalendarProds()){
                     if(calendarProd.getId() == calendarProdId){
                         calendarProd.setTypeCode(typeCode);
                         break;

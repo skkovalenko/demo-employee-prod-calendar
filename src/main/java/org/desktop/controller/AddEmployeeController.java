@@ -25,6 +25,7 @@ import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Component
 @Controller
@@ -54,42 +55,35 @@ public class AddEmployeeController {
     @FXML private Button buttonBackRedactorEmp;
 
     @FXML private void clickButtonSaveEmployee(){
-
         Employee employee = employeeCreate();
         employee = employeeRepository.save(employee);
-        createProdCalendarEmployee(employee);
-        employeeRepository.save(employee);
-        AppData.getEmployeeHashSet().clear();
-        AppData.getEmployeeCalendarProdHashMap().clear();
-        AppData.getDepartmentHashSet().clear();
-        AppData.getEmployeeData().clear();
-        AppData.setEmployeeHashSet(employeeRepository.findAll());
-
+        AppData.setEmployee(createProdCalendarEmployee(employee));
     }
+
     @FXML private void clickButtonBackRedactorEmp() throws IOException {
         StageInitializer.getStageMain(resourceRedactorEmp);
     }
 
     private Employee employeeCreate() {
-
         Employee employee = new Employee();
         employee.setFirstName(firstName.getText());
         employee.setLastName(lastName.getText());
         employee.setMiddleName(middleName.getText());
         employee.setDateOfBirth(dateOfBirth.getValue().toString());
-        employee.setAge(Period.between(dateOfBirth.getValue(), LocalDate.now()).getYears());
         employee.setPosition(position.getText());
-        employee.setDepartment(getDepartment(department.getText()));
+        Department departmentForEmployee = getDepartment(department.getText());
+        if(departmentForEmployee != null){
+            employee.setDepartment(departmentForEmployee);
+        }
         employee.setAddress(addressCreate(city.getText(), street.getText(), house.getText(), apart.getText(), employee));
         return employee;
-
     }
-    private void createProdCalendarEmployee(Employee employee){
+    private Employee createProdCalendarEmployee(Employee employee){
         LocalDate localDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int nextYear = localDate.getYear() + 1;
         DataProdCalendar year = AppData.getDataProdCalendarHashMap().get(localDate.getYear());
         Month monthCheck = localDate.getMonth();
-
+        TreeSet<CalendarProd> calendarProds = new TreeSet<>();
         Set<DayForProdCalendar> daysMonth = year.getDays(localDate.getMonth());
         while (localDate.getYear() < nextYear){
             if(monthCheck != localDate.getMonth()){
@@ -111,8 +105,11 @@ public class AddEmployeeController {
                 }
             }
             calendarProdRepository.save(calendarProd);
+            calendarProds.add(calendarProd);
             localDate = localDate.plusDays(1);
         }
+        employee.setCalendarProds(calendarProds);
+        return employee;
     }
 
     private Address addressCreate(String city, String street, String house, String apart, Employee employee){
