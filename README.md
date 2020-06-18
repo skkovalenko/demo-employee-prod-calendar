@@ -1,5 +1,4 @@
 # demo-employee-prod-calendar
-Тестовое задание для "Наука"<br><br>
 Производственный календарь, демо.<br>
 Используются технологии:<br>
 Java, Spring boot, JavaFX, Maven<br><br>
